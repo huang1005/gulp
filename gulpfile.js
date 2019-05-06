@@ -45,6 +45,75 @@ let jsArr = ["./js/cornerstone.min.js",
     "./js/amazeui.min.js",
     "./js/main.js"
 ];
+
+// stylus
+gulp.task("testStylus", ["cleancss"], function() {
+    gulp
+        .src("./stylus/main.styl")
+        .pipe(watch("stylus/*.syl"))
+        .pipe(
+            plumber({ errorHandler: notify.onError("Error: <%= error.message %>") })
+        )
+        .pipe(sourcemaps.init())
+        .pipe(stylus())
+        .pipe(autoPrefix({ browsers: browserArr, cascade: true, remove: true }))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest("./css"));
+});
+
+
+// html
+gulp.task("html", ["cleanhtml"], function() {
+    var options = {
+        removeComments: true, //清除HTML注释
+        collapseWhitespace: true, //压缩HTML
+        collapseBooleanAttributes: true, //省略布尔属性的值 <input checked="true"/> ==> <input />
+        removeEmptyAttributes: true, //删除所有空格作属性值 <input id="" /> ==> <input />
+        removeScriptTypeAttributes: true, //删除<script>的type="text/javascript"
+        removeStyleLinkTypeAttributes: true, //删除<style>和<link>的type="text/css"
+        minifyJS: true, //压缩页面JS
+        minifyCSS: true //压缩页面CSS
+    };
+    return (
+        gulp
+        .src(["./html/**/*.html", "!./html/device.html", "!./html/template/*.html"])
+        .pipe(
+            plumber({ errorHandler: notify.onError("Error: <%= error.message %>") })
+        )
+        .pipe(fileinclude())
+        .pipe(gulp.dest("./dist/"))
+    );
+});
+// -------------清除缓存配置-------------
+gulp.task('concat', ["cleancss"], function() { //- 创建一个名为 concat 的 task
+    gulp.src(['./css/*.css']) //- 需要处理的css文件，放到一个字符串数组里
+        //.pipe(concat('wrap.min.css'))                         //- 合并后的文件名
+        .pipe(minifyCss()) //- 压缩处理成一行
+        .pipe(rev()) //- 文件名加MD5后缀
+        .pipe(gulp.dest('./dist/css')) //- 输出文件本地
+        .pipe(rev.manifest()) //- 生成一个rev-manifest.json
+        .pipe(gulp.dest('./rev')); //- 将 rev-manifest.json 保存到 rev 目录内
+});
+// gulp.task('js', ['cleanjs'], function() { //- 创建一个名为 concat 的 task
+//     gulp.src(['./js/*.js']) //- 需要处理的js文件，放到一个字符串数组里
+//         .pipe(jshint()) //- 压缩处理成一行
+//         .pipe(uglify())
+//         .pipe(rev()) //- 文件名加MD5后缀
+//         .pipe(gulp.dest('.dist/js')) //- 输出文件本地
+//         .pipe(rev.manifest()) //- 生成一个rev-manifest.json
+//         .pipe(gulp.dest('./rev')); //- 将 rev-manifest.json 保存到 rev 目录内
+// });
+gulp.task('rev', function() {
+    gulp.src(['./rev/*.json', "./html/**/*.html", "!./html/device.html", "!./html/template/*.html"]) //- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
+        .pipe(fileinclude())
+        .pipe(revCollector()) //- 执行文件内css名的替换
+        .pipe(gulp.dest("./dist/")) //- 替换后的文件输出的目录
+});
+// -------------清除缓存配置-------------
+
+
+
+
 // 清除 dist 文件夹
 gulp.task("clean", function() {
     return del.sync([
@@ -78,74 +147,8 @@ gulp.task("cleanimages", function(cb) {
     });
 });
 
-gulp.task('concat', ["cleancss"], function() { //- 创建一个名为 concat 的 task
-    gulp.src(['./css/*.css']) //- 需要处理的css文件，放到一个字符串数组里
-        //.pipe(concat('wrap.min.css'))                         //- 合并后的文件名
-        .pipe(minifyCss()) //- 压缩处理成一行
-        .pipe(rev()) //- 文件名加MD5后缀
-        .pipe(gulp.dest('./dist/css')) //- 输出文件本地
-        .pipe(rev.manifest()) //- 生成一个rev-manifest.json
-        .pipe(gulp.dest('./rev')); //- 将 rev-manifest.json 保存到 rev 目录内
-});
-// gulp.task('js', ['cleanjs'], function() { //- 创建一个名为 concat 的 task
-//     gulp.src(['./js/*.js']) //- 需要处理的js文件，放到一个字符串数组里
-//         .pipe(jshint()) //- 压缩处理成一行
-//         .pipe(uglify())
-//         .pipe(rev()) //- 文件名加MD5后缀
-//         .pipe(gulp.dest('.dist/js')) //- 输出文件本地
-//         .pipe(rev.manifest()) //- 生成一个rev-manifest.json
-//         .pipe(gulp.dest('./rev')); //- 将 rev-manifest.json 保存到 rev 目录内
-// });
-gulp.task('rev', function() {
-    gulp.src(['./rev/*.json', "./html/**/*.html", "!./html/device.html", "!./html/template/*.html"]) //- 读取 rev-manifest.json 文件以及需要进行css名替换的文件
-        .pipe(fileinclude())
-        .pipe(revCollector()) //- 执行文件内css名的替换
-        .pipe(gulp.dest("./dist/")) //- 替换后的文件输出的目录
-});
 
-// stylus
-gulp.task("testStylus", ["cleancss"], function() {
-    gulp
-        .src("./stylus/main.styl")
-        .pipe(watch("stylus/*.syl"))
-        .pipe(
-            plumber({ errorHandler: notify.onError("Error: <%= error.message %>") })
-        )
-        .pipe(sourcemaps.init())
-        .pipe(stylus())
-        .pipe(autoPrefix({ browsers: browserArr, cascade: true, remove: true }))
-        //.pipe(minify())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest("./css"));
-});
-
-
-// html 整合
-gulp.task("html", ["cleanhtml"], function() {
-    var options = {
-        removeComments: true, //清除HTML注释
-        collapseWhitespace: true, //压缩HTML
-        collapseBooleanAttributes: true, //省略布尔属性的值 <input checked="true"/> ==> <input />
-        removeEmptyAttributes: true, //删除所有空格作属性值 <input id="" /> ==> <input />
-        removeScriptTypeAttributes: true, //删除<script>的type="text/javascript"
-        removeStyleLinkTypeAttributes: true, //删除<style>和<link>的type="text/css"
-        minifyJS: true, //压缩页面JS
-        minifyCSS: true //压缩页面CSS
-    };
-    return (
-        gulp
-        .src(["./html/**/*.html", "!./html/device.html", "!./html/template/*.html"])
-        .pipe(
-            plumber({ errorHandler: notify.onError("Error: <%= error.message %>") })
-        )
-        .pipe(fileinclude())
-        // .pipe(htmlmin(options))
-        .pipe(gulp.dest("./dist/"))
-    );
-});
-// gulp.task("copy", function() {
-//   return gulp.src("./images/**/*").pipe(gulp.dest("./dist/images"));
-// });
+// 输出指定文件
 gulp.task("copyothercss", ["cleancss"], function() {
     return gulp.src(["./css/*"]).pipe(gulp.dest("./dist/css"));
 });
@@ -161,33 +164,11 @@ gulp.task("purecopyimages", function() {
         .pipe(watch("./images/**/*"))
         .pipe(gulp.dest("./dist/images"));
 });
+gulp.task('copyjs', function() {
+    return gulp.src('js/*.js').pipe(gulp.dest('dist/js'));
 
-// 合并
-// gulp.task("buildjs", ["cleanjs"], function () {
-//   return (
-//     gulp
-//       .src(jsArr)
-//       .pipe(concat("./dist/js/main.js"))
-//       .pipe(gulp.dest("./"))
-//       // .pipe(rename({suffix: '.min'}))
-//       // .pipe(uglify()) //压缩
-//       .pipe(gulp.dest("./"))
-//   ); //输出
-// });
-
-// 转移js
-gulp.task('src-move', function() {
-    gulp.src('js/*.js')
-        .pipe(gulp.dest('dist/js'));
 });
 
-//  //压缩js文件
-//  gulp.task('js-min',function(){
-//   gulp.src('src/js/*.js')
-//       .pipe(uglify())       
-//       .pipe(rename({suffix:'.min'}))
-//       .pipe(gulp.dest('dist/js'));
-// });
 let filterEvent = function(type) {
     return type === "change";
 };
@@ -215,15 +196,6 @@ gulp.task("serve", function() {
             }
         });
     });
-    // watch(["./js/"], function (e) {
-    //   console.log(e.event);
-    //   let type = e.event;
-    //   gulp.start(["buildjs"], function () {
-    //     if (filterEvent(type)) {
-    //       browserSync.reload();
-    //     }
-    //   });
-    // });
     watch(["./html/"], function(e) {
         console.log(e.event);
         let type = e.event;
@@ -268,13 +240,10 @@ gulp.task("default", [
     "clean",
     "testStylus",
     "copyimages",
-    // "copyothercss",
-    // "buildjs",
-    // "js-min",
+    "copyotherfont",
     "concat",
     "rev",
     "html",
-    "src-move",
+    "copyjs",
     "serve",
-    "copyotherfont"
 ]);
