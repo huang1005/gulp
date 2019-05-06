@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> @@include('../device.html')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <title>云胶片</title>
+</head>
+<!-- <script src="./js/main.js"></script> -->
+<script src="../js/cornerstone.min.js"></script>
+<script src="../js/cornerstoneMath.min.js"></script>
+<script src="../js/cornerstoneTools.min.js"></script>
+<script src="../js/hammer.js"></script>
+<script src="../js/dicomParser.min.js"></script>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/fastclick.js"></script>
+<script src="../js/cornerstoneWADOImageLoader.js"></script>
+<script>
+    window.cornerstoneWADOImageLoader || document.write('<script src="https://unpkg.com/cornerstone-wado-image-loader">\x3C/script>')
+</script>
+<script src="http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.js"></script>
+
+<body>
+    <div class="wx-container">
+        @@include('../template/header.html', { "wx-title": "查看报告", "wx-url": "..\/images" })
+        <div class="am-tabs" data-am-tabs="{noSwipe: 1}" id="someTabs">
+            <ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify" id="wx-tab-item">
+                <li><a href="">诊断报告</a></li>
+                <li class="am-active"><a href="">数字胶片</a></li>
+                <li><a href="">资讯医生</a></li>
+            </ul>
+            <div class="am-tabs-bd">
+                <div class="am-tab-panel"></div>
+                <div class="am-tab-panel am-active">
+                    <div class="wx-Flam-container">
+                        <div oncontextmenu="return false" class='disable-selection noIbar' unselectable='on' onselectstart='return false;' onmousedown='return false;'>
+                            <div id="dicomImage"></div>
+                        </div>
+                        <div class="wx-title-header">
+                            <div class="wx-title-item">
+                                <span>影像序号：1/1</span>
+                                <span>帧序号：1/13</span>
+                            </div>
+                            <div class="wx-title-item">
+                                <span>检查日期：20190423</span>
+                            </div>
+                        </div>
+                        <div class="wx-title-footer">
+                            <div class="wx-title-item">
+                                <span>图像缩放：0.28</span>
+                                <span>窗宽/窗位：255/1725</span>
+                            </div>
+                            <div class="wx-title-item">
+                                <span>图像质量：无损</span>
+                            </div>
+                        </div>
+                        <div class="wx-icon-btns">
+                            <ul class="wx-icons-list">
+                                <li>
+                                    <img src="../images/wx-icon-fz.png" alt="">
+                                    <p>翻转</p>
+                                    <div class="wx-icon-none">
+                                        <ul>
+                                            <li class="anticlockwise">
+                                                <img src="../images/wx-icon-nsz.png" alt="">
+                                                <p>逆时针90</p>
+                                            </li>
+                                            <li class="Clockwise">
+                                                <img src=" ../images/wx-icon-ssz.png" alt="">
+                                                <p>顺时针90</p>
+                                            </li>
+                                            <li class="level">
+                                                <img src="../images/wx-icon-sp.png" alt="">
+                                                <p>水平镜像</p>
+                                            </li>
+                                            <li class="vertical">
+                                                <img src="../images/wx-icon-cz.png" alt="">
+                                                <p>垂直镜像</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="invert">
+                                    <img src="../images/wx-icon-fs.png" alt="">
+                                    <p>反色</p>
+                                </li>
+                                <li>
+                                    <img src="../images/wx-icon-bz.png" alt="">
+                                    <p>标注</p>
+                                    <div class="wx-icon-none">
+                                        <ul>
+                                            <li class="enableLength">
+                                                <img src="../images/wx-icon-cd.png" alt="">
+                                                <p>长度</p>
+                                            </li>
+                                            <li>
+                                                <img src="../images/wx-icon-hdz.png" alt="">
+                                                <p>灰度值</p>
+                                            </li>
+                                            <li class="rectangleroi">
+                                                <img src="../images/wx-icon-jx.png" alt="">
+                                                <p>矩形</p>
+                                            </li>
+                                            <li class="circleroi">
+                                                <img src="../images/wx-icon-yx.png" alt="">
+                                                <p>圆形</p>
+                                            </li>
+                                            <li class="freehand">
+                                                <img src="../images/wx-icon-zybj.png" alt="">
+                                                <p>自由标记</p>
+                                            </li>
+                                            <li>
+                                                <img src="../images/wx-icon-xxb.png" alt="">
+                                                <p>心胸比</p>
+                                            </li>
+                                            <li class="eraser">
+                                                <img src="../images/wx-icon-delate.png" alt="">
+                                                <p>删除标记</p>
+                                            </li>
+                                            <li class="eraser">
+                                                <img src="../images/wx-icon-delate.png" alt="">
+                                                <p>删除标记</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <!-- 窗宽预设 -->
+                                <li class="preset">
+                                    <img src="../images/wx-icon-fz.png" alt="">
+                                    <p>窗宽预设</p>
+                                    <div class="wx-icon-none">
+                                        <ul>
+                                            <li class="preset-f1600">
+                                                <p>肺窗</p>
+                                                <p>1600,-500</p>
+                                            </li>
+                                            <li class="preset-f350">
+                                                <p>纵膈窗</p>
+                                                <p>350,40</p>
+                                            </li>
+                                            <li class="preset-f1000">
+                                                <p>骨窗</p>
+                                                <p>1000,200</p>
+                                            </li>
+                                            <li class="preset-f250">
+                                                <p>肝窗</p>
+                                                <p>250,40</p>
+                                            </li>
+                                            <li class="preset-f100">
+                                                <p>脑窗</p>
+                                                <p>100,13</p>
+                                            </li>
+                                            <li class="preset-f2500">
+                                                <p>耳窗</p>
+                                                <p>2500,200</p>
+                                            </li>
+                                            <li class="preset-f2500">
+                                                <p>耳窗</p>
+                                                <p>2500,200</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="wx-icon-results">
+                                <div class="wx-icon-result wx-results-active">
+                                    <img src="../images/wx-icon-result.png" alt="">
+                                    <p>复位</p>
+                                </div>
+                                <div class="wx-icon-return">
+                                    <img src="../images/wx-icon-return.png" alt="">
+                                    <p>返回</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-tab-panel"></div>
+            </div>
+        </div>
+        <script>
+            $(function() {
+                // cornerstoneTools.init()
+                //要执行的js代码段
+                cornerstoneTools.external.Hammer = Hammer;
+                cornerstoneTools.external.cornerstone = cornerstone;
+                cornerstoneTools.external.cornerstoneMath = cornerstoneMath;
+                cornerstoneWADOImageLoader.external.cornerstoneMath = cornerstoneMath;
+                cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+                //指定要注册加载程序的基石实例
+                cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+                cornerstone.registerImageLoader("http", cornerstoneWADOImageLoader.loadImage);
+                cornerstone.registerImageLoader("https", cornerstoneWADOImageLoader.loadImage);
+                var config = {
+                    taskConfiguration: {
+                        'decodeTask': {
+                            codecsPath: 'cornerstoneWADOImageLoaderCodecs.js'
+                        }
+                    },
+                    webWorkerPath: '../js/cornerstoneWADOImageLoaderWebWorker.js'
+                };
+                cornerstoneWADOImageLoader.webWorkerManager.initialize(config);
+                var element = document.getElementById("dicomImage");
+                cornerstone.enable(element);
+                let imageId =
+                    "wadouri:" +
+                    "http://jiuxianginfo.com/dcm/1.2.392.200036.9123.100.11.12.200000000.2013052710593606.dcm";
+                cornerstone.loadAndCacheImage(imageId).then(
+                    function(image) {
+                        var viewport = cornerstone.getDefaultViewportForImage(element, image);
+                        cornerstone.displayImage(element, image, viewport);
+                        cornerstoneTools.mouseInput.enable(element);
+                        cornerstoneTools.mouseWheelInput.enable(element);
+                        cornerstoneTools.wwwcTouchDrag.activate(element);
+                        // cornerstoneTools.length.enable(element);
+                    },
+                    function(err) {
+                        console.log(err)
+                    }
+                );
+                // icon事件注册
+                $(".invert").on("click", function() {
+                    const viewport = cornerstone.getViewport(element);
+                    viewport.invert = !viewport.invert;
+                    cornerstone.setViewport(element, viewport);
+                });
+                $(".anticlockwise").on("click", function() {
+                    const viewport = cornerstone.getViewport(element);
+                    viewport.rotation -= 90;
+                    cornerstone.setViewport(element, viewport);
+                });
+                $(".Clockwise").on("click", function() {
+                    const viewport = cornerstone.getViewport(element);
+                    viewport.rotation += 90;
+                    cornerstone.setViewport(element, viewport);
+                });
+                $(".level").on("click", function() {
+                    const viewport = cornerstone.getViewport(element);
+                    viewport.hflip = !viewport.hflip;
+                    cornerstone.setViewport(element, viewport);
+                });
+                $(".vertical").on("click", function() {
+                    const viewport = cornerstone.getViewport(element);
+                    viewport.vflip = !viewport.vflip;
+                    cornerstone.setViewport(element, viewport);
+                });
+                // 长度
+                // $('.enableLength').on("click", function () {
+                //     disableAllTools();
+                //     cornerstoneTools.length.activate(element, 1);
+                // })
+                // 窗宽预设
+                $('.preset-f1600').on("click", function() {
+                    let viewport = cornerstone.getViewport(element);
+                    console.log(viewport);
+                    viewport.voi.windowWidth = 1600
+                    viewport.voi.windowCenter = -500
+                    cornerstone.setViewport(element, viewport);
+                })
+                $('.preset-f350').on("click", function() {
+                    let viewport = cornerstone.getViewport(element);
+                    console.log(viewport);
+                    viewport.voi.windowWidth = 350
+                    viewport.voi.windowCenter = 40
+                    cornerstone.setViewport(element, viewport);
+                })
+                $('.preset-f1000').on("click", function() {
+                    let viewport = cornerstone.getViewport(element);
+                    console.log(viewport);
+                    viewport.voi.windowWidth = 1000
+                    viewport.voi.windowCenter = 300
+                    cornerstone.setViewport(element, viewport);
+                })
+                $('.preset-f250').on("click", function() {
+                    let viewport = cornerstone.getViewport(element);
+                    console.log(viewport);
+                    viewport.voi.windowWidth = 250
+                    viewport.voi.windowCenter = 300
+                    cornerstone.setViewport(element, viewport);
+                })
+                $('.preset-f100').on("click", function() {
+                    let viewport = cornerstone.getViewport(element);
+                    console.log(viewport);
+                    viewport.voi.windowWidth = 100
+                    viewport.voi.windowCenter = 43
+                    cornerstone.setViewport(element, viewport);
+                })
+                $('.preset-f2500').on("click", function() {
+                    let viewport = cornerstone.getViewport(element);
+                    console.log(viewport);
+                    viewport.voi.windowWidth = 2500
+                    viewport.voi.windowCenter = 200
+                    cornerstone.setViewport(element, viewport);
+                })
+
+                function disableAllTools() {
+                    cornerstoneTools.length.deactivate(element, 1);
+                }
+                // 穿透
+                $(function() {
+                    FastClick.attach(document.body);
+                });
+                // icon操作
+                $('#someTabs').tabs({
+                    noSwipe: 1
+                });
+                $(".wx-icons-list > li").each(function(index, item) {
+                    $(item).on("click", function(e) {
+                        $(this).find('.wx-icon-none').css({
+                            display: 'block'
+                        })
+                        if ($(this).find('.wx-icon-none').length > 0) {
+                            $(".wx-icon-result").removeClass("wx-results-active").siblings(".wx-icon-return").addClass("wx-results-active")
+                        }
+                    })
+                })
+                $(".wx-icon-return").on("click", function() {
+                    $('.wx-icon-none').css({
+                        display: 'none'
+                    })
+                    $(this).removeClass("wx-results-active").siblings(".wx-icon-result").addClass("wx-results-active")
+                })
+                $(".wx-icon-result").on("click", function() {
+                    cornerstone.reset(element);
+                })
+                $(".preset .wx-icon-none li").on("click", function(e) {
+                    $(this).css("border", "1px solid #2290f2").siblings().css("border", "1px solid #fff")
+                })
+
+            })
+        </script>
+</body>
+<script>
+</script>
+
+</htmls

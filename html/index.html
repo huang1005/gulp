@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> @@include('./device.html')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="./css/amazeui.min.css"> -->
+    <link rel="stylesheet" href="./css/main.css">
+    <title>index</title>
+</head>
+
+<body>
+    <div class="wx-container">
+        @@include('./template/header.html', { "wx-title": "认证方式", "wx-url": ".\/images" })
+        <div class="wx-btn">
+            <a href="./page/viewFrom.html" class="wx-phone">手机号认证</a>
+        </div>
+    </div>
+</body>
+
+</html>

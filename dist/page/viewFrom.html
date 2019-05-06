@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> <meta name="hotcss" content="max-width=540">
+<script>
+  (function (window, document) {
+    'use strict';
+    var hotcss = {};
+    (function () {
+      var viewportEl = document.querySelector('meta[name="viewport"]'),
+        hotcssEl = document.querySelector('meta[name="hotcss"]'),
+        dpr = window.devicePixelRatio || 1,
+        maxWidth = 540,
+        designWidth = 0;
+      dpr = dpr >= 3 ? 3 : (dpr >= 2 ? 2 : 1);
+      if (hotcssEl) {
+        var hotcssCon = hotcssEl.getAttribute('content');
+        if (hotcssCon) {
+          var initialDprMatch = hotcssCon.match(/initial\-dpr=([\d\.]+)/);
+          if (initialDprMatch) {
+            dpr = parseFloat(initialDprMatch[1]);
+          }
+          var maxWidthMatch = hotcssCon.match(/max\-width=([\d\.]+)/);
+          if (maxWidthMatch) {
+            maxWidth = parseFloat(maxWidthMatch[1]);
+          }
+          var designWidthMatch = hotcssCon.match(/design\-width=([\d\.]+)/);
+          if (designWidthMatch) {
+            designWidth = parseFloat(designWidthMatch[1]);
+          }
+        }
+      }
+
+      document.documentElement.setAttribute('data-dpr', dpr);
+      hotcss.dpr = dpr;
+
+      document.documentElement.setAttribute('max-width', maxWidth);
+      hotcss.maxWidth = maxWidth;
+
+      if (designWidth) {
+        document.documentElement.setAttribute('design-width', designWidth);
+      }
+      hotcss.designWidth = designWidth; // 保证px2rem 和 rem2px 不传第二个参数时, 获取hotcss.designWidth是undefined导致的NaN
+
+      var scale = 1 / dpr,
+        content = 'width=device-width, initial-scale=' + scale + ', minimum-scale=' + scale + ', maximum-scale=' + scale + ', user-scalable=no';
+
+      if (viewportEl) {
+        viewportEl.setAttribute('content', content);
+      } else {
+        viewportEl = document.createElement('meta');
+        viewportEl.setAttribute('name', 'viewport');
+        viewportEl.setAttribute('content', content);
+        document.head.appendChild(viewportEl);
+      }
+
+    })();
+
+    hotcss.px2rem = function (px, designWidth) {
+      if (!designWidth) {
+        designWidth = parseInt(hotcss.designWidth, 10);
+      }
+
+      return parseInt(px, 10) * 320 / designWidth / 20;
+    }
+
+    hotcss.rem2px = function (rem, designWidth) {
+      if (!designWidth) {
+        designWidth = parseInt(hotcss.designWidth, 10);
+      }
+      return rem * 20 * designWidth / 320;
+    }
+
+    hotcss.mresize = function () {
+      var innerWidth = document.documentElement.getBoundingClientRect().width || window.innerWidth;
+
+      if (hotcss.maxWidth && (innerWidth / hotcss.dpr > hotcss.maxWidth)) {
+        innerWidth = hotcss.maxWidth * hotcss.dpr;
+      }
+
+      if (!innerWidth) { return false; }
+
+      document.documentElement.style.fontSize = (innerWidth * 20 / 320) + 'px';
+
+      hotcss.callback && hotcss.callback();
+
+    };
+
+    hotcss.mresize();
+
+    window.addEventListener('resize', function () {
+      clearTimeout(hotcss.tid);
+      hotcss.tid = setTimeout(hotcss.mresize, 33);
+    }, false);
+
+    window.addEventListener('load', hotcss.mresize, false);
+
+    setTimeout(function () {
+      hotcss.mresize();
+    }, 333)
+
+    window.hotcss = hotcss;
+  })(window, document);
+</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/amazeui-3fb03f352e.min.css">
+    <link rel="stylesheet" href="../css/main-22e4390812.css">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+
+    <title>index</title>
+</head>
+
+<body>
+    <div class="wx-container">
+        <div class="wx-header">
+    <a href="../index.html">
+        <div>
+            <img src="../images/wx-title-left.png" alt="返回" srcset="">
+        </div>
+    </a>
+    <div>手机号登陆</div>
+    <div><img src="../images/wx-title-right.png" alt="菜单" srcset=""></div>
+</div>
+        <div class="wx-from">
+            <form class="am-form">
+                <input class="am-form-field" id="wx-userPhone" type="text" placeholder="请输入11位手机号码">
+                <input class="am-form-field" id="wx-userCode" type="text" placeholder="请输入验证码">
+                <button type="button" class="am-btn am-btn-secondary" id="wx-submit">获取验证码</button>
+            </form>
+            <a>
+                <button type="button" class="am-btn am-btn-secondary" id="wx-logIn">立即登录</button>
+            </a>
+        </div>
+        <p class="wx-model-title">请输入手机号码</p>
+    </div>
+    <script>
+        $(function() {
+            $("#wx-logIn").on("click", function() {
+                if (!$("#wx-userPhone").val() && !$("#wx-userCode").val()) {
+                    $(".wx-model-title").css({
+                        opacity: "1"
+                    }).text("请输入手机号码")
+                } else if (!$("#wx-userCode").val()) {
+                    $(".wx-model-title").css({
+                        opacity: "1"
+                    }).text("请获取验证码")
+                } else {
+                    window.location.href = "../page/viewList.html";
+                }
+                setTimeout(function() {
+                    $(".wx-model-title").css({
+                        opacity: "0"
+                    })
+                }, 3000)
+            })
+            var leftTime = 59
+            $("#wx-submit").on("click", function() {
+                if (!$("#wx-userPhone").val()) {
+                    $(".wx-model-title").css({
+                        opacity: "1"
+                    }).text("请先输入手机号码")
+                    setTimeout(function() {
+                        $(".wx-model-title").css({
+                            opacity: "0"
+                        })
+                    }, 3000)
+                    return
+                }
+                let _this = this
+                var timer = setInterval(function() {
+                    $(_this).text(leftTime + '秒后获取')
+                    leftTime--
+                    if (leftTime == 0) { //重新发送
+                        clearInterval(timer);
+                        $(_this).text("获取验证码")
+                    } else if (leftTime == 58) {
+                        $("#wx-userCode").val("3421")
+                    }
+                }, 1000)
+            })
+        })
+    </script>
+</body>
+
+</html>

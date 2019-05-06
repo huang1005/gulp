@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    @@include('../device.html')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="../css/amazeui.min.css"> -->
+    <!-- http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css
+    http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.min.css
+    http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.js
+    http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.min.js
+    http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.ie8polyfill.js
+    http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.ie8polyfill.min.js
+    http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.widgets.helper.js
+    http://cdn.amazeui.org/amazeui/2.7.2/js/amazeui.widgets.helper.min.js -->
+    <link rel="stylesheet" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css">
+    <link rel="stylesheet" href="../css/main.css">
+
+    <title>个人胶片列表</title>
+</head>
+
+<body>
+    <div class="wx-container">
+        @@include('../template/header.html', {
+        "wx-title": "个人胶片列表",
+        "wx-url": "..\/images"
+        })
+        <div class="wx-list-contont">
+            <ul class="am-list am-list-borde" id="wx_list">
+                <a href="../page/viewFlam.html">
+                    <li class="">
+                        超声波检测
+                        <i class="am-icon-angle-right" style="float: right;"></i>
+                    </li>
+                </a>
+                <a href="../page/viewFlam.html">
+                    <li class="">
+                        超声波检测
+                        <i class="am-icon-angle-right" style="float: right;"></i>
+                    </li>
+                </a>
+                <a href="../page/viewFlam.html">
+                    <li class="">
+                        超声波检测
+                        <i class="am-icon-angle-right" style="float: right;"></i>
+                    </li>
+                </a>
+                <a href="../page/viewFlam.html">
+                    <li class="">
+                        超声波检测
+                        <i class="am-icon-angle-right" style="float: right;"></i>
+                    </li>
+                </a>
+                <!-- <li class="">CT检测</li>
+                <li class="">b超检测</li>
+                <li class="">CT检测</li>
+                <li class="">超声波检测</li> -->
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

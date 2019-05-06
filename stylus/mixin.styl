@@ -1,0 +1,22 @@
+r(px)
+  return unit(px * 320 / designWidth / 20, 'rem')
+
+fm(row, col)
+  display flex
+  if col
+    align-items col
+  if row
+    justify-content row
+
+bg(url)
+  background url("~images/" + url) slice(arguments, 1)
+
+wh(w,h)
+  width w
+  height h
+
+w(w)
+  width w
+
+h(h)
+  height h

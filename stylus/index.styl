@@ -1,0 +1,291 @@
+html, body {
+  w: 100%;
+  h: 100%;
+}
+
+.wx-container {
+  w: r(750);
+  height: 100%;
+  min-width: 320px;
+  background: #ffffff;
+  margin: 0 auto;
+  position: relative;
+
+  .wx-btn {
+    h: r(200);
+    w: r(750);
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    text-align: center;
+
+    .wx-phone {
+      background: #2290f2;
+      color: #ffffff;
+      font-size: r(32);
+      display: inline-block;
+      w: r(660);
+      h: r(90);
+      border-radius: r(20);
+      line-height: r(90);
+    }
+  }
+}
+
+.wx-header {
+  font-size: r(36);
+  color: #333333;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  padding: r(15) r(20);
+
+  img {
+    w: r(54);
+  }
+}
+
+.wx-from {
+  padding: r(15) r(20);
+}
+
+#wx-userPhone, #wx-userCode {
+  h: r(100);
+  w: r(680);
+  color: #8f8f8f;
+  border: none;
+  font-size: r(30) !important;
+  border-bottom: 1px solid #bfbfbf;
+}
+
+#wx-submit {
+  h: r(85);
+  width: r(150);
+  background: #2290f2;
+  font-size: r(24);
+  border: none;
+  text-align: center;
+  position: absolute;
+  border-radius: r(20);
+  top: r(215);
+  right: r(50);
+  padding: 0;
+}
+
+#wx-logIn {
+  w: r(680);
+  h: r(90);
+  background: #cccccc;
+  font-size: r(34);
+  border: none;
+  margin-top: r(50);
+  border-radius: r(20);
+}
+
+#wx_list {
+  font-size: r(26);
+  color: #333333;
+
+  li {
+    padding: r(20) r(30);
+    cursor: pointer;
+  }
+}
+
+#wx-tab-item {
+  h: r(78);
+
+  li {
+    font-size: r(30);
+    color: #333;
+  }
+}
+
+.am-tabs, .am-tabs-bd {
+  h: 100% - r(345);
+}
+
+.am-tabs-bd .am-tab-panel {
+  line-height: 0;
+  padding: 0;
+}
+
+.noIbar {
+  w: r(750);
+  h: 100%;
+  position: relative;
+  color: white;
+  display: inline-block;
+  border-style: solid;
+  border-color: black;
+}
+
+.am-tabs-nav .am-active a {
+  border: none !important;
+  border-bottom: 3px solid #2290f2 !important;
+}
+
+#dicomImage {
+  width: 375px;
+  height: 100%;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  margin: 0 auto;
+}
+
+.am-tab-panel {
+  h: 100%;
+}
+
+.wx-Flam-container {
+  h: 100%;
+  position: relative;
+  background: black;
+}
+
+.wx-title-header, .wx-title-footer {
+  w: r(750);
+  padding: r(0) r(10);
+  color: #ffffff;
+  display: flex;
+  height: r(60);
+  justify-content: space-between;
+  position: absolute;
+  font-size: r(22);
+  z-index: 9999;
+}
+
+.wx-title-header {
+  top: r(50);
+  margin-top: r(-20);
+}
+
+.wx-title-footer {
+  bottom: r(150);
+}
+
+.wx-title-item {
+  height: r(60);
+  display: flex;
+  flex-direction: column;
+
+  span {
+    display: block;
+    height: r(30);
+  }
+}
+
+.wx-icon-btns {
+  w: r(750);
+  h: r(150);
+  display: flex;
+  background: #434343;
+  font-size: r(20);
+  position: absolute;
+  bottom: r(0);
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  .wx-icons-list {
+    h: r(150);
+    display: flex;
+
+    li {
+      w: r(120);
+      color: #ffffff;
+      text-align: center;
+      cursor: pointer;
+
+      img {
+        display: block;
+        w: r(42);
+        h: r(42);
+        margin: r(30) auto;
+      }
+    }
+  }
+}
+
+.preset {
+  .wx-icon-none {
+    li {
+      w: r(115);
+      h: r(80);
+      padding: r(5) r(0);
+      line-height: r(30);
+      margin-top: r(40);
+      border-radius: r(10);
+      margin: r(40) r(10) r(0) r(10);
+      border: 1px solid #fff;
+    }
+  }
+}
+
+.wx-icon-none {
+  display: none;
+
+  ul {
+    // w: r(1450);
+    h: r(150);
+    display: none;
+    background: #434343;
+    font-size: r(20);
+    position: absolute;
+    display: flex;
+    bottom: r(0);
+    left: r(0);
+    overflow-y: hidden;
+    overflow-x: auto;
+
+    img {
+      display: block;
+      w: r(42);
+      h: r(42);
+      margin: r(20) auto;
+    }
+  }
+}
+
+.wx-icon-results {
+  w: r(120);
+  h: r(150);
+  background: #949494;
+  position: fixed;
+  right: r(0);
+  bottom: r(0);
+
+  div {
+    h: r(150);
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+    display: none;
+  }
+
+  .wx-results-active {
+    display: block;
+  }
+
+  img {
+    w: r(42);
+    h: r(42);
+    display: block;
+    margin: r(30) auto;
+  }
+}
+
+// from 登录
+.wx-model-title {
+  opacity: 0;
+  transition: all 1s;
+  font-size: r(28);
+  text-align: center;
+  margin: r(50) auto;
+  h: r(60);
+  line-height: r(60);
+  width: r(240);
+  border-radius: r(10);
+  background: #000000;
+  color: #ffffff;
+}
